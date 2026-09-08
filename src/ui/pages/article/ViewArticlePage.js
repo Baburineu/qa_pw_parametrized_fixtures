@@ -6,11 +6,11 @@ export class ViewArticlePage {
     this.userId = userId;
     this.articleTitleHeader = page.getByRole('heading');
     this.editArticleButton = page.getByRole('link', {name: 'Edit Article'}).first();
-    this.followButon = page.getByRole('button', { name: 'Follow' }).first()
+    this.followButton = page.getByRole('button', { name: 'Follow' }).first()
   }
 
   authorLinkInArticleHeader(username) {
-    return this.page.getByRole('link', { username }).first();
+    return this.page.getByRole('link', { name: username }).first();
   }
 
   tagListItem(tagName) {
@@ -33,8 +33,8 @@ export class ViewArticlePage {
 
   async clickOnEditArticleButton() {
     await this.step(`Click on 'Edit Article' button`, async () => {
-      await this.editArticleButton.click()
-    })
+      await this.editArticleButton.click();
+    });
   }
 
   async assertArticleTitleIsVisible(title) {
@@ -81,7 +81,7 @@ export class ViewArticlePage {
 
   async clickOnFollowButton() {
     await this.step(`Click on the 'Follow' user button`, async() => {
-      await this.followButon.click();
+      await this.followButton.click();
     });
   };
 }

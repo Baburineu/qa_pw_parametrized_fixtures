@@ -4,7 +4,6 @@ import { test } from "../../_fixtures/fixtures";
 import { generateNewArticleData } from "../../../src/common/testData/generateNewArticleData";
 import { EditArticlePage } from "../../../src/ui/pages/article/EditArticlePage";
 import { ViewArticlePage } from "../../../src/ui/pages/article/ViewArticlePage";
-import { expect } from "@playwright/test";
 
 const testParameters = [
   {tagsNumber: 1, testName: 'one tag'},
@@ -25,13 +24,13 @@ testParameters.forEach(({tagsNumber, testName}) => {
         const newArticleData = generateNewArticleData(logger, tagsNumber)
 
         await viewArticlePage.open(articleWithoutTags.url);
-        await viewArticlePage.clickOnEditArticleButton()
+        await viewArticlePage.clickOnEditArticleButton();
 
         await editArticlePage.fillTagsField(newArticleData.tags);
-        await editArticlePage.clickOnUpdateArticleButton()
+        await editArticlePage.clickOnUpdateArticleButton();
 
         await viewArticlePage.open(articleWithoutTags.url);
         await viewArticlePage.assertArticleTagsAreVisible(newArticleData.tags);
-    })
-  })
-})
+    });
+  });
+});

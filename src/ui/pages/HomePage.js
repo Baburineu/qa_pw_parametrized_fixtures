@@ -6,7 +6,7 @@ export class HomePage {
     this.userId = userId;
     this.yourFeedTab = page.getByText('Your Feed');
     this.newArticleLink = page.getByRole('link', { name: 'New Article' });
-    this.HomeLink = page.getByRole('link', { name: 'Home' });
+    this.homeLink = page.getByRole('link', { name: 'Home' });
     this.articlePreviewCard = page.locator('.article-preview');
   }
 
@@ -14,13 +14,12 @@ export class HomePage {
     return await testStep(title, stepToRun, this.userId);
   }
 
-  async getArticlePreviewsCards() {
-    await this.articlePreviewCard.first().waitFor();
-    return await this.articlePreviewCard.all();
+  async getArticlePreviewsCards(position) {
+    return await this.articlePreviewCard.nth(position);
   }
 
   authorLinkInArticlePreview(username) {
-    return this.page.getByRole('link', { username });
+    return this.page.getByRole('link', { name: username });
   }
 
   async clickNewArticleLink() {
@@ -31,7 +30,7 @@ export class HomePage {
 
   async clickHomeLink() {
     await this.step(`Click the 'Home' link`, async () => {
-      await this.HomeLink.click();
+      await this.homeLink.click();
     });
   }
 
@@ -42,17 +41,17 @@ export class HomePage {
   }
 
   async assertArticlePreviewHasCorrectTitle(previewTitle, CardPosition) {
-    await this.step(`Assert the article preview has correct title`, async () => {
-      let articlesPreview = await this.getArticlePreviewsCards()
-      await expect(articlesPreview[CardPosition]).toContainText(previewTitle);
+    await this.step(`Assert the article preview has '${previewTitle}' title`, async () => {
+      const articleCard = await this.getArticlePreviewsCards(CardPosition)
+      await expect(articleCard).toBeVisible()
+      await expect(articleCard).toContainText(previewTitle);
     });
   }
 
   async assertArticlePreviewHasCorrectAuthor(authorName, CardPosition) {
-    await this.step(`Assert the article preview has correct author name`, async () => {
-      const articlesPreview = await this.getArticlePreviewsCards();
-      const authorLink = articlesPreview[CardPosition].filter({
-        has: this.authorLinkInArticlePreview(authorName)});
+    await this.step(`Assert the article preview has '${authorName}' author name `, async () => {
+      const articlesPreview = await this.getArticlePreviewsCards(CardPosition);
+      const authorLink = articlesPreview.locator('a', { hasText: authorName });
       
       await expect(authorLink).toBeVisible();
     });

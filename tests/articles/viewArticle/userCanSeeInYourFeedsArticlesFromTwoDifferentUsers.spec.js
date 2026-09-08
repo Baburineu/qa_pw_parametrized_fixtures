@@ -2,7 +2,6 @@ import { test } from '../../_fixtures/fixtures';
 import { ViewArticlePage } from '../../../src/ui/pages/article/ViewArticlePage';
 import { createArticle } from '../../../src/ui/actions/articles/createArticle';
 import { signUpUser } from '../../../src/ui/actions/auth/signUpUser';
-import { vi } from '@faker-js/faker';
 import { HomePage } from '../../../src/ui/pages/HomePage';
 
 test.use({ contextsNumber: 3, usersNumber: 3 });
@@ -27,9 +26,9 @@ test(`User can see in 'Your Feeds' articles from two different users`, async ({
   await viewArticlePage.open(articleWithoutTags.url);
   await viewArticlePage.clickOnFollowButton()
   await viewArticlePage.open(articleWithOneTag.url);
-  await viewArticlePage.clickOnFollowButton()
+  await viewArticlePage.clickOnFollowButton();
 
-  await homePage.clickHomeLink()
+  await homePage.clickHomeLink();
   await homePage.assertArticlePreviewHasCorrectTitle(articleWithOneTag.title, 0);
   await homePage.assertArticlePreviewHasCorrectAuthor(users[1].username, 0);  
   await homePage.assertArticlePreviewHasCorrectTitle(articleWithoutTags.title, 1);

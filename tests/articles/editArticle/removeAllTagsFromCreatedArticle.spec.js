@@ -5,7 +5,6 @@ import { EditArticlePage } from "../../../src/ui/pages/article/EditArticlePage";
 import { ViewArticlePage } from "../../../src/ui/pages/article/ViewArticlePage";
 import { test } from "../../_fixtures/fixtures";
 
-let article;
 const testParameters = [
   {tagsNumber: 1, testName: 'one tag'},
   {tagsNumber: 2, testName: 'all two tags'},
@@ -14,6 +13,8 @@ const testParameters = [
 
 testParameters.forEach(({tagsNumber, testName}) => {
   test.describe(`User is able to remove all tags from previously created article`, () => {
+    let article;
+
     test.beforeEach(async ({page, user, logger}) => {
       article = generateNewArticleData(logger, tagsNumber)
 
