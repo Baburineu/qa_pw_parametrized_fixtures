@@ -5,10 +5,42 @@ export class EditArticlePage {
     this.page = page;
     this.userId = userId;
     this.articleTitleHeader = page.getByRole('heading');
-  }
+    this.tagField = page.getByPlaceholder('Enter tags');
+    this.updateArticleButton = page.getByRole('button', {
+      name: 'Update Article',
+    });
+
+  };
 
   async step(title, stepToRun) {
     return await testStep(title, stepToRun, this.userId);
+  };
+
+  tagListItem(tagName) {
+    return this.page.locator('span').filter({ hasText: `${tagName}` }).locator('i');
+  };
+
+  async clickOnRemoveTag(tags) {
+    for(let tag of tags){
+      await this.step(`Remove '${tag}' tag`, async () => {
+        await (this.tagListItem(tag)).click()
+      });
+    };
+  };
+
+  async fillTagsField(tags) {
+    await this.step(`Fill the 'Tags' field`, async () => {
+      for (let i = 0; i < tags.length; i++) {
+        await this.tagField.fill(tags[i]);
+        await this.page.keyboard.press('Enter');
+      }
+    });
+  }
+
+  async clickOnUpdateArticleButton() {
+    await this.step(`Click on 'Update Article' button`, async () => {
+      await this.updateArticleButton.click()
+    })
   }
 
   async assertArticleTitle(title) {

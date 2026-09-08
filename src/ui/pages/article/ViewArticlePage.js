@@ -5,6 +5,8 @@ export class ViewArticlePage {
     this.page = page;
     this.userId = userId;
     this.articleTitleHeader = page.getByRole('heading');
+    this.editArticleButton = page.getByRole('link', {name: 'Edit Article'}).first();
+    this.followButon = page.getByRole('button', { name: 'Follow' }).first()
   }
 
   authorLinkInArticleHeader(username) {
@@ -27,6 +29,12 @@ export class ViewArticlePage {
     await this.step(`Open 'View Article' page`, async () => {
       await this.page.goto(url);
     });
+  }
+
+  async clickOnEditArticleButton() {
+    await this.step(`Click on 'Edit Article' button`, async () => {
+      await this.editArticleButton.click()
+    })
   }
 
   async assertArticleTitleIsVisible(title) {
@@ -52,9 +60,28 @@ export class ViewArticlePage {
 
   async assertArticleTagsAreVisible(tags) {
     await this.step(`Assert the article has correct tags`, async () => {
+      await expect( async() => {
+        await this.page.reload();
+        await expect(this.tagListItem(tags[0])).toBeVisible({timeout: 2000});
+      }).toPass({timeout: 15000})
+      
       for (let i = 0; i < tags.length; i++) {
         await expect(this.tagListItem(tags[i])).toBeVisible();
       }
     });
   }
+
+  async assertArticleTagsAreRemoved(tags) {
+    await this.step(`Asser the article tags removed`, async() => {
+      for (let tag of tags) {
+        await expect(this.tagListItem(tag)).toBeHidden();
+      }
+    })
+  }
+
+  async clickOnFollowButton() {
+    await this.step(`Click on the 'Follow' user button`, async() => {
+      await this.followButon.click();
+    });
+  };
 }
