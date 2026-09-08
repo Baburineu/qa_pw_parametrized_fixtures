@@ -26,7 +26,7 @@ testParameters.forEach(({tagsNumber, testName}) => {
         await viewArticlePage.open(articleWithoutTags.url);
         await viewArticlePage.clickOnEditArticleButton();
 
-        await editArticlePage.fillTagsField(newArticleData.tags);
+        await editArticlePage.addTags(newArticleData.tags);
         await editArticlePage.clickOnUpdateArticleButton();
 
         await viewArticlePage.open(articleWithoutTags.url);

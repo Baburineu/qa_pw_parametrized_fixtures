@@ -14,7 +14,9 @@ export class ViewArticlePage {
   }
 
   tagListItem(tagName) {
-    return this.page.getByRole('listitem').filter({ hasText: tagName });
+    return this.page.getByRole('listitem').filter({
+      has: this.page.getByText(tagName, { exact: true })
+    });
   }
 
   async step(title, stepToRun) {
@@ -74,7 +76,7 @@ export class ViewArticlePage {
   async assertArticleTagsAreRemoved(tags) {
     await this.step(`Asser the article tags removed`, async() => {
       for (let tag of tags) {
-        await expect(this.tagListItem(tag)).toBeHidden();
+        await expect(this.tagListItem(tag)).not.toBeVisible();
       }
     })
   }

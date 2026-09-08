@@ -17,21 +17,23 @@ export class EditArticlePage {
   };
 
   tagListItem(tagName) {
-    return this.page.locator('span').filter({ hasText: `${tagName}` }).locator('i');
+    return this.page.locator('span').filter({ hasText: `${tagName}` }).locator('.ion-close-round');
   };
 
   async clickOnRemoveTag(tags) {
     for(let tag of tags){
       await this.step(`Remove '${tag}' tag`, async () => {
-        await (this.tagListItem(tag)).click()
+        const tagLocator = this.tagListItem(tag);
+        await (tagLocator).click();
+        await expect(tagLocator).not.toBeVisible();
       });
     };
   };
 
-  async fillTagsField(tags) {
+  async addTags(tags) {
     await this.step(`Fill the 'Tags' field`, async () => {
       for (let i = 0; i < tags.length; i++) {
-        await this.tagField.fill(tags[i]);
+        await this.tagField.pressSequentially(tags[i]);
         await this.page.keyboard.press('Enter');
       }
     });

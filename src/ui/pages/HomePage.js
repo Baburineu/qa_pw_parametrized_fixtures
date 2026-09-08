@@ -14,8 +14,8 @@ export class HomePage {
     return await testStep(title, stepToRun, this.userId);
   }
 
-  async getArticlePreviewsCards(position) {
-    return await this.articlePreviewCard.nth(position);
+  getArticlePreviewCard(position) {
+    return this.articlePreviewCard.nth(position);
   }
 
   authorLinkInArticlePreview(username) {
@@ -42,15 +42,16 @@ export class HomePage {
 
   async assertArticlePreviewHasCorrectTitle(previewTitle, CardPosition) {
     await this.step(`Assert the article preview has '${previewTitle}' title`, async () => {
-      const articleCard = await this.getArticlePreviewsCards(CardPosition)
-      await expect(articleCard).toBeVisible()
+      const articleCard = this.getArticlePreviewCard(CardPosition);
+      
+      await expect(articleCard).toBeVisible();
       await expect(articleCard).toContainText(previewTitle);
     });
   }
 
   async assertArticlePreviewHasCorrectAuthor(authorName, CardPosition) {
     await this.step(`Assert the article preview has '${authorName}' author name `, async () => {
-      const articlesPreview = await this.getArticlePreviewsCards(CardPosition);
+      const articlesPreview = await this.getArticlePreviewCard(CardPosition);
       const authorLink = articlesPreview.locator('a', { hasText: authorName });
       
       await expect(authorLink).toBeVisible();
